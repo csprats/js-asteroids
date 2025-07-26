@@ -41,19 +41,19 @@ document.addEventListener('keyup', (e) => {
 function updatePlayer() {
   // Rotation
   if (keys['ArrowLeft'] || keys['a']) {
-    player.rotation = -player.rotationSpeed * game.deltaTime
+    player.rotation = -player.rotationSpeed
   } else if (keys['ArrowRight'] || keys['d']) {
-    player.rotation = player.rotationSpeed * game.deltaTime
+    player.rotation = player.rotationSpeed
   } else {
     player.rotation = 0
   }
 
-  player.angle += player.rotation * game.deltaTime
+  player.angle += player.rotation
 
   // Thrust
   if (keys['ArrowUp'] || keys['w']) {
     player.thrust = Math.min(
-      player.thrust + 0.1 * game.deltaTime,
+      player.thrust + 0.1,
       player.maxThrust
     )
   } else {
@@ -62,17 +62,17 @@ function updatePlayer() {
 
   // Apply thrust to velocity
   if (player.thrust > 0) {
-    player.velocity.x += Math.cos(player.angle) * player.thrust * game.deltaTime
-    player.velocity.y += Math.sin(player.angle) * player.thrust * game.deltaTime
+    player.velocity.x += Math.cos(player.angle) * player.thrust
+    player.velocity.y += Math.sin(player.angle) * player.thrust
   }
 
   // Apply friction
-  // player.velocity.x *= Math.pow(player.friction, game.deltaTime);
-  // player.velocity.y *= Math.pow(player.friction, game.deltaTime);
+  player.velocity.x *= 0.97;
+  player.velocity.y *= 0.97;
 
   // Update position
-  player.x += player.velocity.x * game.deltaTime
-  player.y += player.velocity.y * game.deltaTime
+  player.x += player.velocity.x
+  player.y += player.velocity.y
 
   // Wrap around screen
   if (player.x < 0) player.x = game.width
@@ -130,17 +130,14 @@ function updateUI() {
 function gameLoop() {
   if (!game.running) return
 
-  const loopStartTime = performance.now()
+  
 
   clearCanvas()
   updatePlayer()
   drawPlayer()
   updateUI()
 
-  // Calculate and log execution time
-  const loopEndTime = performance.now()
-  const executionTime = loopEndTime - loopStartTime
-  game.deltaTime = executionTime
+  
 
   // This function calls gameLoop again, creating a loop that runs as fast as the browser can handle it.
   requestAnimationFrame(gameLoop)
