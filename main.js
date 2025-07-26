@@ -13,8 +13,9 @@ canvas.style.margin = 'auto'
 const game = new Game(canvas)
 const inputManager = new InputManager()
 const player = new Player(canvas.width / 2, canvas.height / 2)
-let bullet = new Bullet(player.x, player.y, player.angle, 500)
+let bullet = new Bullet(player.angle, 500)
 let shoot = false
+bullet = new Bullet()
 // Main game loop
 function gameLoop() {
   if (!game.running) return
@@ -35,20 +36,14 @@ function gameLoop() {
   
   //Bullet
   if (inputManager.isKeyPressed(' ') || bullet.active) {
-	//If is not active, create a new one
-	if (!bullet.active) {
-		bullet = new Bullet(player.x, player.y, player.angle, 500)
-	}
-	//Active it
-	bullet.active = true
+
+	bullet.add(player.angle, 500)
+	
 	//Move and draw
-	bullet.update(game.getDeltaTime(), player.x, player.y)
+	bullet.update(game.getDeltaTime())
 	bullet.draw(game.getContext())
 	
-	//Check for border collision and if it returns true, disable it
-	if (bullet.borderCollision(game.width, game.height)) {
-		bullet.active = false
-	}
+	bullet.borderCollision(game.width, game.height)
   }
   
   // Continue the game loop

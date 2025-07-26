@@ -1,47 +1,62 @@
 // Bullet class
 export class Bullet {
-    constructor(x, y, angle, speed) {
-        this.x = x
-        this.y = y
+    constructor() {
+		this.speed = 500
         this.radius = 2.5
-        this.angle = angle
-        this.speed = speed
-        this.velocity = {
-            x: Math.cos(this.angle) * this.speed,
-            y: Math.sin(this.angle) * this.speed
+        this.bullets = []
+    }
+	
+	add(x, y, angle) {
+		const newBullet = {
+            x: x,
+            y: y,
+            angle: angle,
+            velocity: {
+                x: Math.cos(angle) * this.speed,
+                y: Math.sin(angle) * this.speed
+            },
+            active: true
         }
-        this.active = false
+        
+        this.bullets.push(newBullet);
+	}
+	
+    update(deltaTime) {
+		for (let i = 0; i < this.bullets.length; i++) {
+            const bullet = this.bullets[i];
+            if (bullet.active) {
+                bullet.x += bullet.velocity.x * deltaTime;
+                bullet.y += bullet.velocity.y * deltaTime;
+            }
+        }
+        
+        this.bullets = this.bullets.filter(bullet => bullet.active)
     }
-
-    update(deltaTime, x, y) {
-		//Check if is active
-		if (this.active)	
-		{
-			//Move
-			this.x += this.velocity.x * deltaTime
-			this.y += this.velocity.y * deltaTime
-		}
-    }
+    
 
     draw(ctx) {
 		//Check if is active
-		if (this.active)	{
-			ctx.save()
+		ctx.save()
+		ctx.fillStyle = '#ff6b35'
 			
-			//Draw the bullet
-			ctx.beginPath()
-			ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-			ctx.fillStyle = '#ff6b35'
-			ctx.fill()
+		for (let i = 0; i < this.bullets.length; i++) {
+            const bullet = this.bullets[i];
+            if (bullet.active) {
+                ctx.beginPath();
+                ctx.arc(bullet.x, bullet.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 			
-			ctx.restore()
-		}
+		ctx.restore()
     }
     borderCollision(width, height) {
-		//If is outside of the map, desactive the bullet
-		if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
-			this.active = false;
-			return true
-		}
+		for (let i = 0; i < this.bullets.length; i++) {
+            const bullet = this.bullets[i];
+
+            if (bullet.active && (bullet.x < 0 || bullet.x > width || bullet.y < 0 || bullet.y > height)) {
+                bullet.active = false;
+            }
+        }
 	}
 }
