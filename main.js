@@ -2,6 +2,7 @@ import { Bullet } from './bullet.js'
 import { Game } from './game.js'
 import { InputManager } from './input.js'
 import { Player } from './player.js'
+import { Rock } from './rock.js'
 
 // Game canvas setup
 const canvas = document.getElementById('gameCanvas')
@@ -16,6 +17,7 @@ const player = new Player(canvas.width / 2, canvas.height / 2)
 let bullets = []
 let lastShootTime = 0
 const shootCooldown = 250 // milliseconds between shots
+const rock = new Rock(player.x, player.y)
 
 // Main game loop
 function gameLoop() {
@@ -48,6 +50,9 @@ function gameLoop() {
     // Remove bullets that are off screen
     return !bullet.isOffScreen(game.width, game.height)
   })
+
+  rock.update(game.getDeltaTime())
+  rock.draw(game.getContext())
 
   game.updateUI()
 
