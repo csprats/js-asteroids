@@ -17,7 +17,12 @@ const player = new Player(canvas.width / 2, canvas.height / 2)
 let bullets = []
 let lastShootTime = 0
 const shootCooldown = 250 // milliseconds between shots
-const rock = new Rock(player.x, player.y)
+
+let rocks = []
+//Add four rocks
+for (let i = 0; i < 4; i++) {
+	rocks.push(new Rock(canvas.width / 2, canvas.height / 2, Math.random() * 2))
+}
 
 // Main game loop
 function gameLoop() {
@@ -50,9 +55,13 @@ function gameLoop() {
     // Remove bullets that are off screen
     return !bullet.isOffScreen(game.width, game.height)
   })
-
-  /*rock.update(game.getDeltaTime())
-  rock.draw(game.getContext())*/
+  
+  //Move and draw all rocks
+  rocks.filter((rock) => {
+	  rock.update(game.getDeltaTime())
+	  rock.draw(game.getContext())
+	  rock.wrapAround(game.width, game.height)
+  })
 
   game.updateUI()
 
