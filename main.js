@@ -1,6 +1,7 @@
 import { Game } from './game.js'
 import { InputManager } from './input.js'
 import { Player } from './player.js'
+import {Bullet} from './bullet.js'
 
 // Game canvas setup
 const canvas = document.getElementById('gameCanvas')
@@ -29,6 +30,10 @@ function gameLoop() {
 
   // Draw game objects
   player.draw(game.getContext())
+
+  const bullet = new Bullet(player.x, player.y, player.angle, 500)
+  bullet.update(game.getDeltaTime())
+  bullet.draw(game.getContext())
 
   game.updateUI()
 
