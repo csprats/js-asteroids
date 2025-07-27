@@ -2,7 +2,9 @@
 
 Asteroids game implemented in vanilla javascript
 
-# Installation
+![Asteroids Game Screenshot](public/asteroids-screenshot.png)
+
+## Installation
 
 ```
 npm install
@@ -12,4 +14,4 @@ npm install
 npm run dev
 ```
 
-Open the browser and play
+Open the browser and play!
