@@ -7,6 +7,10 @@ Asteroids game implemented in vanilla javascript
 ## Installation
 
 ```
+git clone https://github.com/csprats/js-asteroids.git
+```
+
+```
 npm install
 ```
 
