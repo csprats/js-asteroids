@@ -51,8 +51,8 @@ function gameLoop() {
     return !bullet.isOffScreen(game.width, game.height)
   })
 
-  rock.update(game.getDeltaTime())
-  rock.draw(game.getContext())
+  /*rock.update(game.getDeltaTime())
+  rock.draw(game.getContext())*/
 
   game.updateUI()
 
