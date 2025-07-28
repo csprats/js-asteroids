@@ -1,62 +1,37 @@
 // Bullet class
 export class Bullet {
-    constructor() {
-		this.speed = 500
-        this.radius = 2.5
-        this.bullets = []
+  constructor(x, y, angle) {
+    this.x = x
+    this.y = y
+    this.angle = angle
+    this.speed = 500
+    this.radius = 2.5
+    this.velocity = {
+      x: Math.cos(angle) * this.speed,
+      y: Math.sin(angle) * this.speed,
     }
-	
-	add(x, y, angle) {
-		const newBullet = {
-            x: x,
-            y: y,
-            angle: angle,
-            velocity: {
-                x: Math.cos(angle) * this.speed,
-                y: Math.sin(angle) * this.speed
-            },
-            active: true
-        }
-        
-        this.bullets.push(newBullet);
-	}
-	
-    update(deltaTime) {
-		for (let i = 0; i < this.bullets.length; i++) {
-            const bullet = this.bullets[i];
-            if (bullet.active) {
-                bullet.x += bullet.velocity.x * deltaTime;
-                bullet.y += bullet.velocity.y * deltaTime;
-            }
-        }
-        
-        this.bullets = this.bullets.filter(bullet => bullet.active)
-    }
-    
+    this.active = true
+  }
 
-    draw(ctx) {
-		//Check if is active
-		ctx.save()
-		ctx.fillStyle = '#ff6b35'
-			
-		for (let i = 0; i < this.bullets.length; i++) {
-            const bullet = this.bullets[i];
-            if (bullet.active) {
-                ctx.beginPath();
-                ctx.arc(bullet.x, bullet.y, this.radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-			
-		ctx.restore()
+  update(deltaTime) {
+    if (this.active) {
+      this.x += this.velocity.x * deltaTime
+      this.y += this.velocity.y * deltaTime
     }
-    borderCollision(width, height) {
-		for (let i = 0; i < this.bullets.length; i++) {
-            const bullet = this.bullets[i];
+  }
 
-            if (bullet.active && (bullet.x < 0 || bullet.x > width || bullet.y < 0 || bullet.y > height)) {
-                bullet.active = false;
-            }
-        }
-	}
+  draw(ctx) {
+    if (this.active) {
+      ctx.save()
+      ctx.fillStyle = '#ff6b35'
+      ctx.beginPath()
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.restore()
+    }
+  }
+
+  isOffScreen(width, height) {
+    return this.x < 0 || this.x > width || this.y < 0 || this.y > height
+  }
 }
