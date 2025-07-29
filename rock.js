@@ -1,5 +1,5 @@
 export class Rock {
-	constructor(x, y, angle) {
+	constructor(x, y, angle, radius) {
 		this.x = x
 		this.y = y
 		this.speed = 5
@@ -9,8 +9,9 @@ export class Rock {
 			y: 0
 		}
 		this.rotationSpeed = 0.5
-		this.radius = 25
+		this.radius = radius
 	}
+	
 	update(deltaTime) {
 		//Add the movement
 		this.velocity.x += Math.cos(this.angle) * deltaTime * this.speed
