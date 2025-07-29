@@ -13,17 +13,25 @@ canvas.style.margin = 'auto'
 // Initialize game components
 const game = new Game(canvas)
 const inputManager = new InputManager()
-const player = new Player(canvas.width / 2, canvas.height / 1.25)
+let player = new Player(canvas.width / 2, canvas.height / 1.5)
 let bullets = []
 let lastShootTime = 0
 const shootCooldown = 250 // milliseconds between shots
 
 export let rocks = []
-//Add four rocks
+//Add rocks
+
+//Up
 rocks.push(new Rock(game.width - 25, game.height / 4, Math.random() * 100, 25))
 rocks.push(new Rock(25, game.height / 4, Math.random() * 100, 25))
 rocks.push(new Rock(game.width / 2 - 25, game.height / 4, Math.random() * 100, 25))
 rocks.push(new Rock(game.width / 2 + 25, game.height / 4, Math.random() * 100, 25))
+//Down
+rocks.push(new Rock(game.width - 25, game.height, Math.random() * 100, 25))
+rocks.push(new Rock(25, game.height, Math.random() * 100, 25))
+rocks.push(new Rock(game.width / 2 - 25, game.height, Math.random() * 100, 25))
+rocks.push(new Rock(game.width / 2 + 25, game.height, Math.random() * 100, 25))
+
 
 // Main game loop
 function gameLoop() {
@@ -64,21 +72,19 @@ function gameLoop() {
 	  rock.wrapAround(game.width, game.height)
   })
 
+	//Destroy rocks with bullets and player whit rocks
 	const addedRocks = []
 	
-	bullets = bullets.filter((bullet) => {
+	rocks = rocks.filter((rock) => {
 		let collide = true
-		rocks = rocks.filter((rock) => {
-			const dx = bullet.x - rock.x
-			const dy = bullet.y - rock.y
-			
-			const distance = (dx * dx) + (dy * dy)
-			
-			const sumRadius = bullet.radius + rock.radius
-			
-			const sumRadiusSquared = sumRadius * sumRadius
-			
-			if (distance <= sumRadiusSquared) {
+		//Destroy player
+		if (detectCollision(player, rock)) {
+			game.lives--
+			player = new Player(canvas.width / 2, canvas.height / 2)
+		}
+		bullets = bullets.filter((bullet) => {
+			//If the bullet touch the rock, destroy it
+			if (detectCollision(rock, bullet)) {
 				collide = false
 				if (rock.radius == 25) {
 					addedRocks.push(new Rock(rock.x + 5, rock.y, rock.angle, 12.5))
@@ -87,6 +93,7 @@ function gameLoop() {
 				else {
 					addedRocks.push(new Rock(game.width, game.height, rock.angle, 25))
 				}
+				game.score += 10
 				return false
 			}
 			else {
@@ -100,10 +107,24 @@ function gameLoop() {
 		rocks.push(rock)
 	})
   
+  //Update game UI
   game.updateUI()
 
   // Continue the game loop
-requestAnimationFrame(gameLoop)
+  requestAnimationFrame(gameLoop)
+}
+
+
+function detectCollision(c1, c2) {
+	const dx = c1.x - c2.x
+	const dy = c1.y - c2.y
+			
+	const distance = (dx * dx) + (dy * dy)
+			
+	const sumRadius = c1.radius + c2.radius
+			
+	const sumRadiusSquared = sumRadius * sumRadius
+	return distance <= sumRadiusSquared
 }
 // Start the game
 gameLoop()
