@@ -20,17 +20,17 @@ const shootCooldown = 250 // milliseconds between shots
 
 export let rocks = []
 //Add rocks
-
+const rockRadius = 50
 //Up
-rocks.push(new Rock(game.width - 25, game.height / 4, Math.random() * 100, 25))
-rocks.push(new Rock(25, game.height / 4, Math.random() * 100, 25))
-rocks.push(new Rock(game.width / 2 - 25, game.height / 4, Math.random() * 100, 25))
-rocks.push(new Rock(game.width / 2 + 25, game.height / 4, Math.random() * 100, 25))
+rocks.push(new Rock(game.width - 25, game.height / 4, Math.random() * 100, rockRadius))
+rocks.push(new Rock(25, game.height / 4, Math.random() * 100, rockRadius))
+rocks.push(new Rock(game.width / 2 - 25, game.height / 4, Math.random() * 100, rockRadius))
+rocks.push(new Rock(game.width / 2 + 25, game.height / 4, Math.random() * 100, rockRadius))
 //Down
-rocks.push(new Rock(game.width - 25, game.height, Math.random() * 100, 25))
-rocks.push(new Rock(25, game.height, Math.random() * 100, 25))
-rocks.push(new Rock(game.width / 2 - 25, game.height, Math.random() * 100, 25))
-rocks.push(new Rock(game.width / 2 + 25, game.height, Math.random() * 100, 25))
+rocks.push(new Rock(game.width - 25, game.height, Math.random() * 100, rockRadius))
+rocks.push(new Rock(25, game.height, Math.random() * 100, rockRadius))
+rocks.push(new Rock(game.width / 2 - 25, game.height, Math.random() * 100, rockRadius))
+rocks.push(new Rock(game.width / 2 + 25, game.height, Math.random() * 100, rockRadius))
 
 
 // Main game loop
@@ -86,12 +86,12 @@ function gameLoop() {
 			//If the bullet touch the rock, destroy it
 			if (detectCollision(rock, bullet)) {
 				collide = false
-				if (rock.radius == 25) {
-					addedRocks.push(new Rock(rock.x + 5, rock.y, rock.angle, 12.5))
-					addedRocks.push(new Rock(rock.x - 5, rock.y, -rock.angle, 12.5))
+				if (rock.radius == rockRadius) {
+					addedRocks.push(new Rock(rock.x + 5, rock.y, rock.angle, rockRadius / 2))
+					addedRocks.push(new Rock(rock.x - 5, rock.y, -rock.angle, rockRadius / 2))
 				}
 				else {
-					addedRocks.push(new Rock(game.width, game.height, rock.angle, 25))
+					addedRocks.push(new Rock(game.width, game.height, rock.angle, rockRadius))
 				}
 				game.score += 10
 				return false

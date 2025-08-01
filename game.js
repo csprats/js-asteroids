@@ -30,7 +30,6 @@ export class Game {
   updateUI() {
 	//Check if you lose
 	if (this.lives <= 0) {
-		alert('You lost! Score: ' + this.score)
 		document.location.reload()
 	}
     document.getElementById('score').textContent = this.score

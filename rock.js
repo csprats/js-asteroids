@@ -2,7 +2,7 @@ export class Rock {
 	constructor(x, y, angle, radius) {
 		this.x = x
 		this.y = y
-		this.speed = 10
+		this.speed = 30
 		this.angle = angle
 		this.velocity = {
 			x: 0,
