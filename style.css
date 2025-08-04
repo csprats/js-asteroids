@@ -34,7 +34,7 @@ body {
     margin-right: auto;
 }
 
-.score, .lives {
+.score, .lives, .gameover {
     font-size: 18px;
     font-weight: bold;
-} 
+}

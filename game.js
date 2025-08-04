@@ -13,6 +13,8 @@ export class Game {
     this.now = 0
     this.dt = 0
     this.last = performance.now()
+    this.scoreText = document.getElementById('score')
+    this.livesText = document.getElementById('lives')
   }
 
   updateDeltaTime() {
@@ -28,12 +30,14 @@ export class Game {
   }
 
   updateUI() {
-	//Check if you lose
-	if (this.lives <= 0) {
-		document.location.reload()
-	}
-    document.getElementById('score').textContent = this.score
-    document.getElementById('lives').textContent = this.lives
+    //Check if you lose
+    if (this.lives == 0) {
+        this.clearCanvas()
+        this.running = false
+        document.getElementById('gameOver').textContent = "Game Over!"
+    }
+    this.scoreText.textContent = this.score
+    this.livesText.textContent = this.lives
   }
 
   getDeltaTime() {
